@@ -1,32 +1,12 @@
 import fs from 'fs'
 import path from 'path'
 
-const TOKEN_PATH = path.join(process.cwd(), 'strava-token.json')
-
 // Your environment variables
 const CLIENT_ID = process.env.STRAVA_CLIENT_ID
 const CLIENT_SECRET = process.env.STRAVA_CLIENT_SECRET
 const REFRESH_TOKEN = process.env.STRAVA_REFRESH_TOKEN
 
 async function getValidToken(): Promise<string> {
-	let cachedToken
-
-	// 1. Try to read the existing file
-	if (fs.existsSync(TOKEN_PATH)) {
-		const fileData = fs.readFileSync(TOKEN_PATH, 'utf8')
-		cachedToken = JSON.parse(fileData)
-
-		const nowInSeconds = Math.floor(Date.now() / 1000)
-
-		// 2. Check if it's still valid (with a 5-minute safety buffer)
-		if (cachedToken.expires_at > nowInSeconds + 300) {
-			console.log('Using cached token.')
-			return cachedToken.access_token
-		}
-	}
-
-	// 3. Token is missing or expired -> Refresh it
-	console.log('Token expired or missing. Refreshing from Strava...')
 	const response = await fetch('https://www.strava.com/oauth/token', {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
@@ -39,11 +19,6 @@ async function getValidToken(): Promise<string> {
 	})
 
 	const newTokenData = await response.json()
-
-	// 4. Save the new data back to the file for next time
-	// Note: Strava sometimes rotates the refresh_token, so we save the whole object
-	fs.writeFileSync(TOKEN_PATH, JSON.stringify(newTokenData, null, 2))
-
 	return newTokenData.access_token
 }
 
@@ -80,16 +55,10 @@ function calculatePace(
 ): string {
 	if (distanceInMeters === 0) return '0:00'
 
-	// 1. Calculate how many seconds it takes to cover 1km (1000m)
 	const secondsPerKm = timeInSeconds / (distanceInMeters / 1000)
 
-	// 2. Extract whole minutes
 	const minutes = Math.floor(secondsPerKm / 60)
-
-	// 3. Extract remaining seconds
 	const seconds = Math.floor(secondsPerKm % 60)
-
-	// 4. Pad seconds with a leading zero if needed (e.g., 4:05 instead of 4:5)
 	const paddedSeconds = seconds.toString().padStart(2, '0')
 
 	return `${minutes}:${paddedSeconds}`
