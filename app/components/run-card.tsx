@@ -16,7 +16,7 @@ export const RunCard = ({ run }: { run: RunData }) => {
 		<div className='block max-w-sm p-4 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 mb-12'>
 			<div className='flex items-center justify-between mb-3'>
 				<span className='text-xs font-semibold uppercase tracking-wider text-orange-600 dark:text-orange-500'>
-					Latest Run
+					Latest Activity
 				</span>
 				<span className='text-xs text-zinc-500'>{run.date}</span>
 			</div>
@@ -33,7 +33,7 @@ export const RunCard = ({ run }: { run: RunData }) => {
 					<p className='text-lg font-semibold text-zinc-800 dark:text-zinc-200'>
 						{run.distance}{' '}
 						<span className='text-sm font-normal text-zinc-500'>
-							mi
+							km
 						</span>
 					</p>
 				</div>
