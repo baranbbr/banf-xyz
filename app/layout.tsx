@@ -13,17 +13,25 @@ import Licence from './components/licence'
 export const metadata: Metadata = {
 	metadataBase: new URL(baseUrl),
 	title: {
-		default: 'banf.xyz',
+		default: 'Thoughts, projects, interests and more from @banf.',
 		template: '%s | banf.xyz',
 	},
 	description: 'The thoughts, projects, interests and more from @banf.',
 	openGraph: {
-		title: 'banf.xyz',
-		description: 'Thoughts, projects, interests and more.',
+		title: 'Thoughts, projects, interests and more from @banf.',
+		description:
+			'London based Full-Stack Software Engineer trying to make things better than they were before.',
 		url: baseUrl,
 		siteName: 'banf.xyz',
 		locale: 'en_US',
 		type: 'website',
+		images: [
+			{
+				url: '/og',
+				width: 1200,
+				height: 630,
+			},
+		],
 	},
 	robots: {
 		index: true,
