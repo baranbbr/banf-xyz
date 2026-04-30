@@ -1,13 +1,5 @@
 import Link from 'next/link'
-
-interface RunData {
-	name: string
-	distance: string // "5.21"
-	time: string // "00:45:12"
-	date: string // "Feb 18, 2026"
-	link: string
-	pace: string // "00:05:00"
-}
+import { RunData } from 'lib/strava'
 
 export const RunCard = ({ run }: { run: RunData }) => {
 	if (!run) return null

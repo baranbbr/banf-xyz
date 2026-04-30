@@ -40,3 +40,22 @@ pnpm dev
 ```
 
 Deploy it to the cloud with [Vercel](https://vercel.com/templates) ([Documentation](https://nextjs.org/docs/app/building-your-application/deploying)).
+
+## Strava Cron Setup
+
+Add these environment variables in Vercel Project Settings:
+
+- `STRAVA_CLIENT_ID`
+- `STRAVA_CLIENT_SECRET`
+- `STRAVA_REFRESH_TOKEN`
+- `CRON_SECRET` (used to protect `/api/cron/strava`)
+
+This project includes a Vercel Cron in `vercel.json` that calls `/api/cron/strava` every day at `21:00 UTC`.
+
+To manually test the endpoint locally:
+
+```bash
+curl -H "Authorization: Bearer $CRON_SECRET" http://localhost:3000/api/cron/strava
+```
+
+The latest normalized run snapshot is written to `data/latest-run.json`.

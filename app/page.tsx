@@ -1,10 +1,24 @@
+import { promises as fs } from 'fs'
+import path from 'path'
 import { BlogPosts } from 'app/components/posts'
 import Experience from './components/experience'
 import { RunCard } from './components/run-card'
 import { getLatestActivity } from './about/routes'
+import { RunData } from 'lib/strava'
+
+const CACHE_FILE_PATH = path.join(process.cwd(), 'data', 'latest-run.json')
+
+async function getCachedActivity(): Promise<RunData | null> {
+	try {
+		const raw = await fs.readFile(CACHE_FILE_PATH, 'utf-8')
+		return JSON.parse(raw) as RunData
+	} catch {
+		return null
+	}
+}
 
 export default async function Page() {
-	const run = await getLatestActivity()
+	const run = (await getCachedActivity()) ?? (await getLatestActivity())
 	return (
 		<section>
 			<h1 className='mb-8 text-2xl font-semibold tracking-tighter'>
