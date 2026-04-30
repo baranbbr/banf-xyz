@@ -9,14 +9,8 @@ const OUTPUT_FILE = path.join(process.cwd(), 'data', 'latest-run.json')
 function isAuthorized(request: NextRequest): boolean {
 	if (!CRON_SECRET) return false
 
-	const bearer = request.headers.get('authorization')
-	if (bearer === `Bearer ${CRON_SECRET}`) return true
-
-	const headerSecret = request.headers.get('x-cron-secret')
-	if (headerSecret === CRON_SECRET) return true
-
-	const querySecret = request.nextUrl.searchParams.get('secret')
-	return querySecret === CRON_SECRET
+	const authHeader = request.headers.get('authorization')
+	return authHeader === `Bearer ${CRON_SECRET}`
 }
 
 export async function GET(request: NextRequest) {
@@ -28,17 +22,25 @@ export async function GET(request: NextRequest) {
 	}
 
 	if (!isAuthorized(request)) {
-		return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 })
+		return NextResponse.json(
+			{ ok: false, error: 'Unauthorized' },
+			{ status: 401 },
+		)
 	}
 
 	try {
 		const latestRun = await getLatestActivity()
 		await fs.mkdir(path.dirname(OUTPUT_FILE), { recursive: true })
-		await fs.writeFile(OUTPUT_FILE, `${JSON.stringify(latestRun, null, 2)}\n`, 'utf-8')
+		await fs.writeFile(
+			OUTPUT_FILE,
+			`${JSON.stringify(latestRun, null, 2)}\n`,
+			'utf-8',
+		)
 
 		return NextResponse.json({ ok: true, run: latestRun })
 	} catch (error) {
-		const message = error instanceof Error ? error.message : 'Unexpected error'
+		const message =
+			error instanceof Error ? error.message : 'Unexpected error'
 		return NextResponse.json({ ok: false, error: message }, { status: 502 })
 	}
 }
