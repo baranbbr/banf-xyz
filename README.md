@@ -49,8 +49,11 @@ Add these environment variables in Vercel Project Settings:
 - `STRAVA_CLIENT_SECRET`
 - `STRAVA_REFRESH_TOKEN`
 - `CRON_SECRET` (used to protect `/api/cron/strava`)
+- `TELEGRAM_BOT_TOKEN`
+- `TELEGRAM_CHAT_ID`
 
 This project includes a Vercel Cron in `vercel.json` that calls `/api/cron/strava` every day at `21:00 UTC`.
+Each run sends a Telegram message with success/failure status.
 
 To manually test the endpoint locally:
 
@@ -59,3 +62,9 @@ curl -H "Authorization: Bearer $CRON_SECRET" http://localhost:3000/api/cron/stra
 ```
 
 The latest normalized run snapshot is written to `data/latest-run.json`.
+
+To simulate Telegram failure handling locally:
+
+```bash
+TELEGRAM_BOT_TOKEN=invalid TELEGRAM_CHAT_ID=invalid curl -H "Authorization: Bearer $CRON_SECRET" http://localhost:3000/api/cron/strava
+```
