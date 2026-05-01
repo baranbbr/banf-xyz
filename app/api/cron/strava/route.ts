@@ -1,46 +1,33 @@
-import { promises as fs } from 'fs'
-import path from 'path'
 import { NextRequest, NextResponse } from 'next/server'
+import { put } from '@vercel/blob'
+import { assertCronBearer } from 'lib/cron-secret-auth'
 import { getLatestActivity } from 'lib/strava'
+import { STRAVA_LATEST_RUN_PATHNAME } from 'lib/strava-blob'
 import { sendTelegramMessage } from 'lib/telegram'
-
-const CRON_SECRET = process.env.CRON_SECRET
-const OUTPUT_FILE = path.join(process.cwd(), 'data', 'latest-run.json')
-
-function isAuthorized(request: NextRequest): boolean {
-	if (!CRON_SECRET) return false
-
-	const authHeader = request.headers.get('authorization')
-	return authHeader === `Bearer ${CRON_SECRET}`
-}
 
 function getTimestamp(): string {
 	return new Date().toISOString()
 }
 
-export async function GET(request: NextRequest) {
-	if (!CRON_SECRET) {
-		return NextResponse.json(
-			{ ok: false, error: 'Missing CRON_SECRET environment variable' },
-			{ status: 500 },
-		)
-	}
-
-	if (!isAuthorized(request)) {
-		return NextResponse.json(
-			{ ok: false, error: 'Unauthorized' },
-			{ status: 401 },
-		)
-	}
+export async function GET(request: NextRequest): Promise<NextResponse> {
+	const authResponse = assertCronBearer(request)
+	if (authResponse) return authResponse
 
 	try {
 		const latestRun = await getLatestActivity()
-		await fs.mkdir(path.dirname(OUTPUT_FILE), { recursive: true })
-		await fs.writeFile(
-			OUTPUT_FILE,
-			`${JSON.stringify(latestRun, null, 2)}\n`,
-			'utf-8',
+		const blob = await put(
+			STRAVA_LATEST_RUN_PATHNAME,
+			JSON.stringify(latestRun, null, 2),
+			{
+				access: 'private',
+				allowOverwrite: true,
+				contentType: 'application/json; charset=utf-8',
+			},
 		)
+
+		if (!blob.url) {
+			throw new Error('Failed to write to blob')
+		}
 
 		const successMessage = [
 			'*Strava refresh: SUCCESS*',
@@ -51,7 +38,10 @@ export async function GET(request: NextRequest) {
 
 		const telegramResult = await sendTelegramMessage(successMessage)
 		if (!telegramResult.ok) {
-			console.error('Telegram success notification failed:', telegramResult.error)
+			console.error(
+				'Telegram success notification failed:',
+				telegramResult.error,
+			)
 		}
 
 		return NextResponse.json({
@@ -70,7 +60,10 @@ export async function GET(request: NextRequest) {
 		].join('\n')
 		const telegramResult = await sendTelegramMessage(failureMessage)
 		if (!telegramResult.ok) {
-			console.error('Telegram failure notification failed:', telegramResult.error)
+			console.error(
+				'Telegram failure notification failed:',
+				telegramResult.error,
+			)
 		}
 
 		return NextResponse.json({ ok: false, error: message }, { status: 502 })
