@@ -4,6 +4,9 @@ import { RunCard } from './components/run-card'
 import { getLatestActivity } from './about/routes'
 import { getCachedRunFromBlob } from 'lib/strava-blob'
 
+// Cached until `/api/cron/strava` calls `revalidatePath('/')` after a successful Blob write.
+export const revalidate = false
+
 export default async function Page() {
 	const run =
 		(await getCachedRunFromBlob()) ?? (await getLatestActivity())

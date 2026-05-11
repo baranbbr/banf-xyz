@@ -1,3 +1,4 @@
+import { revalidatePath } from 'next/cache'
 import { NextRequest, NextResponse } from 'next/server'
 import { put } from '@vercel/blob'
 import { assertCronBearer } from 'lib/cron-secret-auth'
@@ -28,6 +29,8 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 		if (!blob.url) {
 			throw new Error('Failed to write to blob')
 		}
+
+		revalidatePath('/')
 
 		const successMessage = [
 			'*Strava refresh: SUCCESS*',
