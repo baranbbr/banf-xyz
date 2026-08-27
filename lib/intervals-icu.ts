@@ -1,6 +1,6 @@
 const API_KEY = process.env.INTERVALS_ICU_API_KEY
 const ATHLETE_ID = process.env.INTERVALS_ICU_ATHLETE_ID ?? 'i691810'
-const OLDEST_DATE = process.env.INTERVALS_ICU_OLDEST_DATE ?? '2020-01-01'
+const OLDEST_DATE = '2020-01-01'
 
 export interface RunData {
 	name: string
