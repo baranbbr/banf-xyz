@@ -47,7 +47,6 @@ Add these environment variables in Vercel Project Settings:
 
 - `INTERVALS_ICU_API_KEY`
 - `INTERVALS_ICU_ATHLETE_ID` (defaults to `i691810` if omitted)
-- `INTERVALS_ICU_OLDEST_DATE` (optional, defaults to `2020-01-01`)
 - `CRON_SECRET` (Bearer token for `/api/cron/activity` and `/api/activity`)
 - `BLOB_READ_WRITE_TOKEN` (Vercel Blob; created when you enable Blob on the project)
 - `TELEGRAM_BOT_TOKEN`
