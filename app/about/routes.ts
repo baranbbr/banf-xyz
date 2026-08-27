@@ -1,1 +1,1 @@
-export { getLatestActivity } from 'lib/strava'
+export { getLatestActivity } from 'lib/intervals-icu'

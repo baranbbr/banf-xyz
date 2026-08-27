@@ -1,7 +1,7 @@
 import Link from 'next/link'
-import { RunData } from 'lib/strava'
+import { RunData } from 'lib/intervals-icu'
 
-export const RunCard = ({ run }: { run: RunData }) => {
+export const RunCard = ({ run }: { run: RunData | null }) => {
 	if (!run) return null
 
 	return (
@@ -54,7 +54,7 @@ export const RunCard = ({ run }: { run: RunData }) => {
 						target='_blank'
 						rel='noopener noreferrer'
 						className='group flex items-center'>
-						View on Strava
+						View on Intervals.icu
 						<svg
 							xmlns='http://www.w3.org/2000/svg'
 							className='h-3 w-3 ml-1 group-hover:translate-x-1 transition-transform'

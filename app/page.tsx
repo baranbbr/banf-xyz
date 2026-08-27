@@ -2,14 +2,26 @@ import { BlogPosts } from 'app/components/posts'
 import Experience from './components/experience'
 import { RunCard } from './components/run-card'
 import { getLatestActivity } from './about/routes'
-import { getCachedRunFromBlob } from 'lib/strava-blob'
+import { getCachedRunFromBlob } from 'lib/activity-blob'
 
-// Cached until `/api/cron/strava` calls `revalidatePath('/')` after a successful Blob write.
+// Cached until `/api/cron/activity` calls `revalidatePath('/')` after a successful Blob write.
 export const revalidate = false
 
+async function getRun() {
+	const cachedRun = await getCachedRunFromBlob()
+	if (cachedRun) return cachedRun
+
+	try {
+		return await getLatestActivity()
+	} catch (error) {
+		console.error('Failed to load latest activity:', error)
+		return null
+	}
+}
+
 export default async function Page() {
-	const run =
-		(await getCachedRunFromBlob()) ?? (await getLatestActivity())
+	const run = await getRun()
+
 	return (
 		<section>
 			<h1 className='mb-8 text-2xl font-semibold tracking-tighter'>
