@@ -49,7 +49,7 @@ export const RunCard = ({ run }: { run: RunData | null }) => {
 					</p>
 				</div>
 				<div className='mt-4 flex items-center text-xs font-medium text-orange-600 dark:text-orange-400'>
-					<Link
+					{/* <Link
 						href={run.link}
 						target='_blank'
 						rel='noopener noreferrer'
@@ -68,7 +68,7 @@ export const RunCard = ({ run }: { run: RunData | null }) => {
 								d='M9 5l7 7-7 7'
 							/>
 						</svg>
-					</Link>
+					</Link> */}
 				</div>
 			</div>
 		</div>
