@@ -1,11 +1,11 @@
 import { get } from '@vercel/blob'
-import type { RunData } from 'lib/strava'
+import type { RunData } from 'lib/intervals-icu'
 
-export const STRAVA_LATEST_RUN_PATHNAME = 'strava/latest-run.json'
+export const LATEST_ACTIVITY_PATHNAME = 'activities/latest-run.json'
 
 export async function getCachedRunFromBlob(): Promise<RunData | null> {
 	try {
-		const result = await get(STRAVA_LATEST_RUN_PATHNAME, {
+		const result = await get(LATEST_ACTIVITY_PATHNAME, {
 			access: 'private',
 		})
 

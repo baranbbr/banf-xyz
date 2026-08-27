@@ -2,8 +2,8 @@ import { revalidatePath } from 'next/cache'
 import { NextRequest, NextResponse } from 'next/server'
 import { put } from '@vercel/blob'
 import { assertCronBearer } from 'lib/cron-secret-auth'
-import { getLatestActivity } from 'lib/strava'
-import { STRAVA_LATEST_RUN_PATHNAME } from 'lib/strava-blob'
+import { getLatestActivity } from 'lib/intervals-icu'
+import { LATEST_ACTIVITY_PATHNAME } from 'lib/activity-blob'
 import { sendTelegramMessage } from 'lib/telegram'
 
 function getTimestamp(): string {
@@ -17,7 +17,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 	try {
 		const latestRun = await getLatestActivity()
 		const blob = await put(
-			STRAVA_LATEST_RUN_PATHNAME,
+			LATEST_ACTIVITY_PATHNAME,
 			JSON.stringify(latestRun, null, 2),
 			{
 				access: 'private',
@@ -33,7 +33,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 		revalidatePath('/')
 
 		const successMessage = [
-			'*Strava refresh: SUCCESS*',
+			'*Activity refresh: SUCCESS*',
 			`Activity: ${latestRun.name}`,
 			`Distance: ${latestRun.distance} km | Pace: ${latestRun.pace}`,
 			`Time: ${getTimestamp()}`,
@@ -57,7 +57,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 			error instanceof Error ? error.message : 'Unexpected error'
 
 		const failureMessage = [
-			'*Strava refresh: FAILURE*',
+			'*Activity refresh: FAILURE*',
 			`Error: ${message}`,
 			`Time: ${getTimestamp()}`,
 		].join('\n')

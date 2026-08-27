@@ -1,7 +1,7 @@
 {
 	"crons": [
 		{
-			"path": "/api/cron/strava",
+			"path": "/api/cron/activity",
 			"schedule": "0 21 * * *"
 		}
 	]
