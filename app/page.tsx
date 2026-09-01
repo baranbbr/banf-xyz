@@ -25,7 +25,7 @@ export default async function Page() {
 	return (
 		<section>
 			<h1 className='mb-8 text-2xl font-semibold tracking-tighter'>
-				banf.xyz
+				baran.live
 			</h1>
 			<div className='my-8'>
 				<p className='text-neutral-600 dark:text-neutral-300 mb-6'>

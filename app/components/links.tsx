@@ -43,7 +43,7 @@ export default function Links() {
 						className='flex items-center transition-all hover:text-neutral-800 dark:hover:text-neutral-100'
 						rel='noopener noreferrer'
 						target='_blank'
-						href='https://x.com/banf'>
+						href='https://x.com/____baran'>
 						<ArrowIcon />
 						<p className='ml-2 h-7'>x.com</p>
 					</a>

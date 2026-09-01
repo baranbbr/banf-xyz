@@ -30,9 +30,9 @@ export async function GET() {
 	const rssFeed = `<?xml version="1.0" encoding="UTF-8" ?>
   <rss version="2.0">
     <channel>
-        <title>banf.xyz</title>
+        <title>baran.live</title>
         <link>${baseUrl}</link>
-        <description>The thoughts, projects, interests and more from banf.</description>
+        <description>The thoughts, projects, interests and more from Baran.</description>
         ${itemsXml}
     </channel>
   </rss>`

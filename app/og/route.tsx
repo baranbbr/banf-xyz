@@ -2,7 +2,7 @@ import { ImageResponse } from 'next/og'
 
 export function GET(request: Request) {
 	let url = new URL(request.url)
-	let title = url.searchParams.get('title') || 'banf.xyz'
+	let title = url.searchParams.get('title') || 'baran.live'
 
 	return new ImageResponse(
 		<div tw='flex relative w-full h-full items-center justify-center bg-[#242424]'>
@@ -11,11 +11,11 @@ export function GET(request: Request) {
 					{title}
 				</h2>
 				<p tw='text-lg text-neutral-400'>
-					Thoughts, projects, interests and more from @banf.
+					Thoughts, projects, interests and more from Baran.
 				</p>
 			</div>
 			<div tw='absolute bottom-8 right-8 text-xl text-neutral-500'>
-				x.com/banf
+				x.com/____baran
 			</div>
 		</div>,
 		{

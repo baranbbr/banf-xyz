@@ -2,10 +2,8 @@ import './global.css'
 import type { Metadata } from 'next'
 import { GeistSans } from 'geist/font/sans'
 import { GeistMono } from 'geist/font/mono'
-import { Navbar } from './components/nav'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
-import Footer from './components/links'
 import { baseUrl } from './sitemap'
 import Links from './components/links'
 import Licence from './components/licence'
@@ -13,16 +11,16 @@ import Licence from './components/licence'
 export const metadata: Metadata = {
 	metadataBase: new URL(baseUrl),
 	title: {
-		default: 'Thoughts, projects, interests and more from @banf.',
-		template: '%s | banf.xyz',
+		default: 'Thoughts, projects, interests and more from Baran.',
+		template: '%s | baran.live',
 	},
-	description: 'The thoughts, projects, interests and more from @banf.',
+	description: 'The thoughts, projects, interests and more from Baran.',
 	openGraph: {
-		title: 'Thoughts, projects, interests and more from @banf.',
+		title: 'Thoughts, projects, interests and more from Baran.',
 		description:
 			'London based Full-Stack Software Engineer trying to make things better than they were before.',
 		url: baseUrl,
-		siteName: 'banf.xyz',
+		siteName: 'baran.live',
 		locale: 'en_US',
 		type: 'website',
 		images: [
