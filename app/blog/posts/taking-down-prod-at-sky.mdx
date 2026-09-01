@@ -1,0 +1,17 @@
+---
+title: Taking down a revenue generating service in prod
+publishedAt: '2023-09-28'
+---
+
+I've taken down production at Sky before, a revenue-generating component.
+Specifically, the component for processing and fulfilling orders from [skystore.com](http://skystore.com).
+
+We were in the process of migrating this component from eu-west to eu-central and unbeknownst to me I thought we were ready to go ahead with deleting the cluster in eu-west... we definitely weren't.
+
+The repo was already configured to deploy to eu-central and all references to eu-west had been deleted. There were no references to eu-west anywhere, apart from the remaining k8s production pods.
+
+Luckily we have a docker registry that an engineer on our team knew how to use to find a deployment of the production pods on eu-west so we could rectify my mistake.
+
+Production was down for a good 20 hours or so in which we had amassed 25+ orders worth about £300 on the queue.
+
+Definitely a learning experience. Made me realise it's not a bad thing to slow down from time to time and understand the consequences of my actions. Being overly-defensive is not always a bad thing.
